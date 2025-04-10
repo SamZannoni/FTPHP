@@ -2,15 +2,15 @@
 // Chemin vers le répertoire principal
 $path = $_SERVER['DOCUMENT_ROOT'];
 include_once($path);
-// Chemin vers le sous-dossier hackz
-$hackzPath = $path . '/hackz';  // Met à jour ici pour pointer vers le sous-dossier 'hackz'
+// Chemin vers le sous-dossier folder
+$folderPath = $path . '/folder';  // Met à jour ici pour pointer vers le sous-dossier 'folder'
 
 // Fonction pour obtenir l'extension d'un fichier
 function ext($file) {
-    global $hackzPath; // Accédez à la variable globale du chemin
+    global $folderPath; // Accédez à la variable globale du chemin
 
     // Ajoutez le chemin absolu au fichier
-    $fullPath = $hackzPath . '/' . $file;
+    $fullPath = $folderPath . '/' . $file;
 
     if (is_dir($fullPath)) {
         return 'dir'; // Retourne 'dir' pour les dossiers
@@ -26,7 +26,7 @@ function ext($file) {
 // Ajoutez un débogage ici
 foreach ($files as $file) {
     echo 'Fichier: ' . $file . ' - Extension: ' . ext($file) . '<br>';  // Débogage
-    print '<a href="./hackz/' . $file . '"><li class="' . ext($file) . '">' . $file . (!is_dir($file) ? ' <span>' . human_filesize($file) . '</span>' : '') . '</li></a>';
+    print '<a href="./folder/' . $file . '"><li class="' . ext($file) . '">' . $file . (!is_dir($file) ? ' <span>' . human_filesize($file) . '</span>' : '') . '</li></a>';
 }
 
 
@@ -46,8 +46,8 @@ function human_filesize($file) {
   return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$sz[$factor - 1] . 'B';
 }
 
-// Obtenir la liste des fichiers dans le sous-dossier 'hackz'
-$files = scandir($hackzPath); // Utilisez le chemin vers 'hackz'
+// Obtenir la liste des fichiers dans le sous-dossier 'folder'
+$files = scandir($folderPath); // Utilisez le chemin vers 'folder'
 
 // Fichiers à exclure
 $exclude = array('.', '..', '.DS_Store', 'index.php', '.git', '.gitmodules', '.gitignore', 'node_modules', 'header.php', 'footer.php', 'folder.png', '.woff', 'style.css', 'files.php', 'Banquise-Regular.woff');
@@ -82,7 +82,7 @@ function goBack() {
     // Boucle à travers le tableau des fichiers
     foreach ($files as $file) {
       // Afficher chaque fichier
-      print '<a href="./hackz/' . $file . '"><li class="' . ext($file) . '">' . $file . (!is_dir($file) ? ' <span>' . human_filesize($file) . '</span>' : '') . '</li></a>';
+      print '<a href="./folder/' . $file . '"><li class="' . ext($file) . '">' . $file . (!is_dir($file) ? ' <span>' . human_filesize($file) . '</span>' : '') . '</li></a>';
     }
 
     // Fermer la balise de la liste non ordonnée

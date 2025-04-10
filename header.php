@@ -5,17 +5,17 @@
     <meta charset="utf-8">
     <title> Home</title>
     <meta name="viewport" content="width=device-width">
-  <link rel="stylesheet" media="screen" href="/style.css" />
+  <link rel="stylesheet" media="screen" href="/style-black.css" />
   </head>
   <body>
 <div id="header">
-  <p id="titre">xxX-Past3-stream42-Xxx</p>
+  <p id="titre">FT&#60;Php&gt;</p>
 
   <div class="row">
     <a class="menu" href="/index.php">Home</a>
-    🍧
+    <img src="/etoile.png">
     <a class="menu" href="/files.php">Fichiers</a>
-    🍧
+    <img src="/etoile.png">
     <a class="menu" href="files.php">FAQ</a>
   </div>
 </div>
