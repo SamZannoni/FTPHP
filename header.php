@@ -9,7 +9,7 @@
   </head>
   <body>
 <div id="header">
-  <p id="titre">FT&#60;Php&gt;</p>
+  <p id="titre">  <img class="banniere" src="/banniere2.gif"> FT&#60;Php&gt;   <img class="banniere" src="/banniere2.gif"></p>
 
   <div class="row">
     <a class="menu" href="/index.php">Home</a>

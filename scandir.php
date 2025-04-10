@@ -33,14 +33,14 @@ function copyFileToNewDirs($sourceFile, $parentDir, $logFile, $excludedDirs) {
             }
 
             if (!in_array($currentPath, $scannedDirs)) {
-                echo "📁 Nouveau répertoire trouvé : $currentPath\n";
+                # echo "📁 Nouveau répertoire trouvé : $currentPath\n";
                 $destinationPath = $currentPath . DIRECTORY_SEPARATOR . 'index.php';
 
                 if (copy($sourceFile, $destinationPath)) {
-                    echo "✅ Copié dans : $destinationPath\n";
+                    # echo "✅ Copié dans : $destinationPath\n";
                 } else {
-                    echo "❌ Échec dans : $destinationPath\n";
-                    print_r(error_get_last());
+                    # echo "❌ Échec dans : $destinationPath\n";
+                    # print_r(error_get_last());
                 }
 
                 file_put_contents($logFile, $currentPath . PHP_EOL, FILE_APPEND);

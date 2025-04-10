@@ -37,6 +37,10 @@ body{
 #info{
   text-decoration: underline;
 }
+.banniere{
+  top:10px;
+  position: relative;
+}
 a{
   color:chartreuse;
   text-decoration:none;
