@@ -1,4 +1,3 @@
-<?php require_once $path . '/scandir.php'; ?> <!-- Inclus le fichier footer.php -->
 
 <?php
 // Chemin vers le répertoire principal

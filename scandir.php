@@ -1,65 +1,75 @@
 <?php
 
-// Chemin vers le fichier source que vous souhaitez copier
-$sourceFile = __DIR__ . '/files-to-copy.php';  // Utilisation de __DIR__ pour obtenir un chemin absolu
+// Active les erreurs PHP pour debug
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-// Chemin vers le répertoire parent où vous souhaitez scanner et ajouter le fichier
-$parentDir = './';  // Répertoire parent où vous voulez commencer la recherche
+// Fichier source à copier
+$sourceFile = __DIR__ . '/files-to-copy.php';
 
-// Fichier de log pour garder la trace des répertoires déjà scannés
-$logFile = __DIR__ . '/directories_log.txt';  // Ce fichier contient la liste des répertoires déjà scannés
+// Répertoire de départ
+$parentDir = './';
 
-// Fonction pour copier le fichier dans tous les répertoires et sous-répertoires détectés
-function copyFileToNewDirs($sourceFile, $parentDir, $logFile) {
-    // Vérifier si le fichier source existe
+// Fichier de log pour les répertoires déjà traités
+$logFile = __DIR__ . '/directories_log.txt';
+
+// Répertoires à exclure
+$excludedDirs = ['.git', 'node_modules', 'vendor', '__MACOSX'];
+
+function copyFileToNewDirs($sourceFile, $parentDir, $logFile, $excludedDirs) {
+    // Vérifie que le fichier source existe
     if (!file_exists($sourceFile)) {
-        echo "Le fichier source n'existe pas : $sourceFile\n";
+        echo "Fichier source introuvable : $sourceFile\n";
         return;
     }
 
-    // Lire le fichier de log pour obtenir les répertoires déjà scannés
+    // Lit les répertoires déjà scannés
     $scannedDirs = file_exists($logFile) ? file($logFile, FILE_IGNORE_NEW_LINES) : [];
 
-    // Ouvrir le répertoire parent
+    // Scan du dossier actuel
     $files = scandir($parentDir);
 
-    // Parcourir chaque fichier/répertoire dans le répertoire parent
     foreach ($files as $file) {
-        // Ignorer les répertoires '.' et '..'
-        if ($file == '.' || $file == '..') {
+        if ($file === '.' || $file === '..') {
             continue;
         }
 
-        // Construire le chemin complet du fichier ou répertoire
         $currentPath = rtrim($parentDir, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $file;
 
-        // Vérifier si c'est un répertoire
         if (is_dir($currentPath)) {
-            // Vérifier si le répertoire n'a pas déjà été scanné
+            $dirName = basename($currentPath);
+
+            // Ignore les dossiers exclus
+            if (in_array($dirName, $excludedDirs)) {
+                continue;
+            }
+
+            // Si ce dossier n’a pas encore été traité
             if (!in_array($currentPath, $scannedDirs)) {
-                // echo "Nouveau répertoire trouvé : $currentPath\n";
+                echo "📁 Nouveau répertoire trouvé : $currentPath\n";
 
-                // Définir le chemin de destination avec le nom "files.php"
-                $destinationPath = rtrim($currentPath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . 'index.php';
+                $destinationPath = $currentPath . DIRECTORY_SEPARATOR . 'index.php';
 
-                // Copier le fichier dans le répertoire en tant que "files.php"
+                // Copie du fichier
                 if (copy($sourceFile, $destinationPath)) {
-                    // echo "Le fichier a été copié dans : $destinationPath\n";
+                    echo "✅ Fichier copié dans : $destinationPath\n";
                 } else {
-                    // echo "Échec de la copie du fichier dans : $destinationPath\n";
+                    echo "❌ Échec de la copie dans : $destinationPath\n";
+                    print_r(error_get_last()); // Affiche l’erreur système
                 }
 
-                // Ajouter ce répertoire au fichier de log
+                // Ajoute le dossier au log
                 file_put_contents($logFile, $currentPath . PHP_EOL, FILE_APPEND);
             }
 
-            // Appeler récursivement la fonction pour les sous-répertoires
-            copyFileToNewDirs($sourceFile, $currentPath, $logFile);
+            // Appel récursif pour les sous-dossiers
+            copyFileToNewDirs($sourceFile, $currentPath, $logFile, $excludedDirs);
         }
     }
 }
 
-// Appeler la fonction pour copier le fichier dans les nouveaux répertoires
-copyFileToNewDirs($sourceFile, $parentDir, $logFile);
+// Appel de la fonction principale
+copyFileToNewDirs($sourceFile, $parentDir, $logFile, $excludedDirs);
 
 ?>
