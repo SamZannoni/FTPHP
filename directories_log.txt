@@ -1,7 +1,0 @@
-
-./folder
-./folder/Emulateurs
-./folder/Emulateurs/DS
-./folder/Emulateurs/Wii
-./folder/Emulateurs/XBX360
-./folder/Ressources-techniques
